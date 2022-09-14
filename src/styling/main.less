@@ -1,0 +1,19 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+input[type='text'] {
+    @apply mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50;
+}
+
+button {
+    @apply px-6 py-2 font-semibold text-sm bg-brand-500 text-white rounded-full shadow-sm;
+}
+
+a {
+    @apply text-brand-500 underline;
+
+    &:hover {
+        @apply text-brand-700 no-underline;
+    }
+}
