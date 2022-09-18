@@ -7,7 +7,7 @@
 
         <div class="group__header">Recommendations</div>
         <router-link to="/popular-products">Popular Products</router-link>
-        <router-link to="/product">ProductDetails Page</router-link>
+        <router-link to="/product">Product Details Page (PDP)</router-link>
         <router-link to="/popular-categories">Popular Categories</router-link>
         <router-link to="/popular-brands">Popular Brands</router-link>
 
@@ -28,7 +28,7 @@
             <button @click="addClassification()">Add new</button>
         </div>
 
-        <router-link to="/" class="ml-0 mt-4">Home / Settings</router-link>
+        <router-link to="/" class="ml-0 mt-4">Settings</router-link>
     </nav>
 
     <router-view class="w-5/6 p-5"/>

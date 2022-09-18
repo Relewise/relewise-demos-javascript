@@ -2,10 +2,16 @@
     <div class="home">
 
         <h1 class="text-2xl font-semibold mb-5">Popular brands</h1>
-        
-        <div v-for="brand in brands?.recommendations" :key="brand.id" style="margin-bottom: 8px;">
-            {{brand.displayName}}
-        </div>
+
+        <div 
+            v-for="brand in brands?.recommendations" 
+            :key="brand.id" 
+            class="mb-1 pb-1 flex border-b border-solid border-gray-300">
+            <div>
+                <span class="block text-gray-500">{{brand.id}} <span class="text-xs">(Rank: {{brand.rank}})</span></span>
+                {{brand.displayName}}
+            </div>
+        </div>        
 
     </div>
 </template>
@@ -22,6 +28,7 @@ const brands: Ref<BrandRecommendationResponse | undefined> = ref<BrandRecommenda
 
 async function setup() {
     brands.value = await recommender.recommendPopularBrands(new PopularBrandsRecommendationBuilder(contextStore.defaultSettings)
+        .setBrandProperties({ displayName: true })
         .sinceMinutesAgo(1440)
         .build());
 }

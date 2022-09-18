@@ -2,9 +2,15 @@
     <div class="home">
 
         <h1 class="text-2xl font-semibold mb-5">Popular Categories</h1>
-        
-        <div v-for="category in categories?.recommendations" :key="category.id" style="margin-bottom: 8px;">
-            {{category.categoryId}}
+
+        <div 
+            v-for="category in categories?.recommendations" 
+            :key="category.categoryId" 
+            class="mb-1 pb-1 flex border-b border-solid border-gray-300">
+            <div>
+                <span class="block text-gray-500">{{category.categoryId}} <span class="text-xs">(Rank: {{category.rank}})</span></span>
+                {{category.displayName}}
+            </div>
         </div>
 
     </div>
@@ -22,6 +28,7 @@ const categories: Ref<ProductCategoriesRecommendationResponse | undefined> = ref
 
 async function setup() {
     categories.value = await recommender.recommendPopularProductCategories(new PopularProductCategoriesRecommendationBuilder(contextStore.defaultSettings)
+        .setProductCategoryProperties({ displayName: true })
         .setNumberOfRecommendations(10)
         .sinceMinutesAgo(1440)
         .build());
