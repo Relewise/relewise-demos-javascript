@@ -1,5 +1,5 @@
 import { createRouter, createWebHistory, RouteRecordRaw } from 'vue-router';
-import HomeView from '../views/HomeView.vue';
+import SettingsView from '../views/SettingsView.vue';
 
 function setTitle(name: string) {
     window.document.title = `${name} | Relewise`;
@@ -8,8 +8,8 @@ function setTitle(name: string) {
 const routes: Array<RouteRecordRaw> = [
     {
         path: '/',
-        name: 'home',
-        component: HomeView,
+        name: 'settings',
+        component: SettingsView,
         meta: {
             title: 'Settings',
         },
