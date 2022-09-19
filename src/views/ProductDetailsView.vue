@@ -10,7 +10,7 @@
                 <div class="my-3">
                     <div class="text-2xl font-semibold">{{(index === 0 ? "Purchased with" : "Products viewed after viewing")}}</div>
                 </div>
-                <Products :products="response?.recommendations"></Products>
+                <Products :products="response?.recommendations ?? []"></Products>
             </div>
         </div>
     </div>
@@ -29,7 +29,7 @@ function init() {
     const searchParams = new URLSearchParams(window.location.search);
 
     const id = searchParams.get('id');
-    if(id) {
+    if (id) {
         productId.value = id;
         recommend();
     }
@@ -47,7 +47,7 @@ async function recommend() {
         .addRequest(new ProductsViewedAfterViewingProductBuilder(contextStore.defaultSettings).setProductProperties({ displayName: true, dataKeys }).product({ productId: productId.value }).build())
         .build();
 
-    const response: ProductRecommendationResponseCollection = await recommender.batchProductRecommendations(request);
+    const response: ProductRecommendationResponseCollection | undefined = await recommender.batchProductRecommendations(request);
 
     result.value = response;
 }

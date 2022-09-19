@@ -12,19 +12,17 @@
                 {{category.displayName}}
             </div>
         </div>
-
     </div>
 </template>
 
 <script lang="ts" setup>
 import contextStore from '@/stores/context.store';
-import { ProductCategoriesRecommendationResponse, PopularProductCategoriesRecommendationBuilder } from '@relewise/client';
+import { ProductCategoryRecommendationResponse, PopularProductCategoriesRecommendationBuilder } from '@relewise/client';
 import { Ref, ref } from 'vue';
-
 
 const recommender = contextStore.getRecommender();
 
-const categories: Ref<ProductCategoriesRecommendationResponse | undefined> = ref<ProductCategoriesRecommendationResponse | undefined>({});
+const categories: Ref<ProductCategoryRecommendationResponse | undefined> = ref<ProductCategoryRecommendationResponse | undefined>({});
 
 async function setup() {
     categories.value = await recommender.recommendPopularProductCategories(new PopularProductCategoriesRecommendationBuilder(contextStore.defaultSettings)

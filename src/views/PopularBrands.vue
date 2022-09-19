@@ -21,7 +21,6 @@ import contextStore from '@/stores/context.store';
 import { BrandRecommendationResponse, PopularBrandsRecommendationBuilder } from '@relewise/client';
 import { Ref, ref } from 'vue';
 
-
 const recommender = contextStore.getRecommender();
 
 const brands: Ref<BrandRecommendationResponse | undefined> = ref<BrandRecommendationResponse | undefined>({});

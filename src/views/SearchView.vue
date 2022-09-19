@@ -5,7 +5,6 @@
             <input type="text" v-model="searchTerm" @keydown.enter="search" placeholder="Type in a search term and press 'Enter' to perform a search">
         </div>
 
-
         <div v-if="result?.results">
             <h2 class="text-xl font-semibold mb-2">Showing results for '{{usedSearchTerm}}' ({{result.results.length}} of {{result.hits}})</h2>
             <Products :products="result?.results"></Products>

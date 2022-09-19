@@ -2,7 +2,7 @@
     <div class="search">
         <h1 class="text-2xl font-semibold mb-5">Popular products</h1>
         <div v-if="result">
-            <Products :products="result?.recommendations"></Products>
+            <Products :products="result?.recommendations ?? []"></Products>
         </div>
     </div>
 </template>
