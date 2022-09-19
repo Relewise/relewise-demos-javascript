@@ -6,7 +6,7 @@
         <div 
             v-for="brand in brands?.recommendations" 
             :key="brand.id" 
-            class="mb-1 pb-1 flex border-b border-solid border-gray-300">
+            class="py-2 flex border-b border-solid border-gray-300">
             <div>
                 <span class="block text-gray-500">{{brand.id}} <span class="text-xs">(Rank: {{brand.rank}})</span></span>
                 {{brand.displayName}}

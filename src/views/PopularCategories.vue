@@ -6,7 +6,7 @@
         <div 
             v-for="category in categories?.recommendations" 
             :key="category.categoryId" 
-            class="mb-1 pb-1 flex border-b border-solid border-gray-300">
+            class="py-2 flex border-b border-solid border-gray-300">
             <div>
                 <span class="block text-gray-500">{{category.categoryId}} <span class="text-xs">(Rank: {{category.rank}})</span></span>
                 {{category.displayName}}
