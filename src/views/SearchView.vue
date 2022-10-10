@@ -13,7 +13,7 @@
 </template>
 
 <script lang="ts" setup>
-import {ProductSearchBuilder, ProductSearchResponse } from '@relewise/client';
+import { ProductSearchBuilder, ProductSearchResponse } from '@relewise/client';
 import { ref, Ref } from 'vue';
 import Products from '@/components/Products.vue';
 import contextStore from '@/stores/context.store';
@@ -27,17 +27,12 @@ const searcher = contextStore.getSearcher();
 async function search() {
     usedSearchTerm.value = searchTerm.value;
 
-    const dataKeys = contextStore.context.value.imageUrlDataKey 
-        ? [ contextStore.context.value.imageUrlDataKey ] 
-        : [];
-        
     const response = await searcher.searchProducts(new ProductSearchBuilder(contextStore.defaultSettings)
-        .setSelectedProductProperties({ displayName: true, dataKeys: dataKeys })
+        .setSelectedProductProperties(contextStore.selectedProductProperties)
         .setTerm(searchTerm.value)
         .pagination(p => p.setPageSize(30))
         .build());
 
     result.value = response;
 }
-
 </script>

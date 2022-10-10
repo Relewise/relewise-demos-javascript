@@ -38,18 +38,19 @@ function init() {
 init();
 
 async function recommend() {
-    const dataKeys = contextStore.context.value.imageUrlDataKey 
-        ? [ contextStore.context.value.imageUrlDataKey ] 
-        : [];
-
     const request: ProductRecommendationRequestCollection = new ProductsRecommendationCollectionBuilder()
-        .addRequest(new PurchasedWithProductBuilder(contextStore.defaultSettings).setProductProperties({ displayName: true, dataKeys }).product({ productId: productId.value }).build())
-        .addRequest(new ProductsViewedAfterViewingProductBuilder(contextStore.defaultSettings).setProductProperties({ displayName: true, dataKeys }).product({ productId: productId.value }).build())
+        .addRequest(new PurchasedWithProductBuilder(contextStore.defaultSettings)
+            .setSelectedProductProperties(contextStore.selectedProductProperties)
+            .product({ productId: productId.value })
+            .build())
+        .addRequest(new ProductsViewedAfterViewingProductBuilder(contextStore.defaultSettings)
+            .setSelectedProductProperties(contextStore.selectedProductProperties)
+            .product({ productId: productId.value })
+            .build())
         .build();
 
     const response: ProductRecommendationResponseCollection | undefined = await recommender.batchProductRecommendations(request);
 
     result.value = response;
 }
-
 </script>

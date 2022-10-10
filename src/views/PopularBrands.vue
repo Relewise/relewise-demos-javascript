@@ -27,11 +27,10 @@ const brands: Ref<BrandRecommendationResponse | undefined> = ref<BrandRecommenda
 
 async function setup() {
     brands.value = await recommender.recommendPopularBrands(new PopularBrandsRecommendationBuilder(contextStore.defaultSettings)
-        .setBrandProperties({ displayName: true })
+        .setSelectedBrandProperties({ displayName: true })
         .sinceMinutesAgo(1440)
         .build());
 }
 
 setup();
-
 </script>

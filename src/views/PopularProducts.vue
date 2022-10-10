@@ -18,12 +18,8 @@ const recommender = contextStore.getRecommender();
 recommend();
 
 async function recommend() {
-    const dataKeys = contextStore.context.value.imageUrlDataKey 
-        ? [ contextStore.context.value.imageUrlDataKey ] 
-        : [];
-
     const request = new PopularProductsBuilder(contextStore.defaultSettings)
-        .setProductProperties({ displayName: true, dataKeys })
+        .setSelectedProductProperties(contextStore.selectedProductProperties)
         .sinceMinutesAgo(1440)
         .build();
 
@@ -31,5 +27,4 @@ async function recommend() {
 
     result.value = response;
 }
-
 </script>

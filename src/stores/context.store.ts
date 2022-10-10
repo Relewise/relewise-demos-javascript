@@ -1,4 +1,4 @@
-import { Searcher, Settings, User, UserFactory, Recommender } from '@relewise/client';
+import { Searcher, Settings, User, UserFactory, Recommender, SelectedProductPropertiesSettings } from '@relewise/client';
 import { computed, reactive } from 'vue';
 
 type Classification = {
@@ -18,7 +18,6 @@ export interface IAppContext {
 }
 
 class AppContext {
-[x: string]: any;
     private state = reactive<IAppContext>({ datasetId: '', apiKey: '', language: 'da-DK', currencyCode: 'DKK' });
 
     constructor() {
@@ -40,6 +39,17 @@ class AppContext {
             displayedAtLocation: 'Relewise Demo App',
             user: this.getUser(),
         };
+    }
+
+    public get selectedProductProperties(): SelectedProductPropertiesSettings {
+        const dataKeys = this.state.imageUrlDataKey
+            ? [this.state.imageUrlDataKey]
+            : [];
+
+        return {
+            displayName: true,
+            dataKeys: dataKeys,
+        } as SelectedProductPropertiesSettings;
     }
 
     public getSearcher(): Searcher {
@@ -68,7 +78,7 @@ class AppContext {
         if (!this.state.classifications)
             this.state.classifications = [];
 
-        this.state.classifications.push({value: '', key: ''});
+        this.state.classifications.push({ value: '', key: '' });
         this.persistState();
     }
 
@@ -85,7 +95,7 @@ class AppContext {
         const user: User = UserFactory.anonymous();
 
         if (this.state.classifications) {
-            user.classifications = this.state.classifications.reduce((prev, cur) => { prev[cur.key] = cur.value; return prev; } , {} as Record<string, string>);
+            user.classifications = this.state.classifications.reduce((prev, cur) => { prev[cur.key] = cur.value; return prev; }, {} as Record<string, string>);
         }
 
         return user;
