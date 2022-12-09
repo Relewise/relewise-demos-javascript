@@ -21,6 +21,7 @@ async function recommend() {
     const request = new PopularProductsBuilder(contextStore.defaultSettings)
         .setSelectedProductProperties(contextStore.selectedProductProperties)
         .sinceMinutesAgo(1440)
+        .setNumberOfRecommendations(30)
         .build();
 
     const response: ProductRecommendationResponse|undefined = await recommender.recommendPopularProducts(request);

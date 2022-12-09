@@ -9,8 +9,8 @@ type Classification = {
 export interface IAppContext {
     datasetId: string;
     apiKey: string;
-    language: string;
-    currencyCode: string;
+    language: string|null;
+    currencyCode: string|null;
     temporaryId?: string;
     authenticatedId?: string;
     classifications?: Classification[];
@@ -18,7 +18,7 @@ export interface IAppContext {
 }
 
 class AppContext {
-    private state = reactive<IAppContext>({ datasetId: '', apiKey: '', language: 'da-DK', currencyCode: 'DKK' });
+    private state = reactive<IAppContext>({ datasetId: '', apiKey: '', language: null, currencyCode: null });
 
     constructor() {
         const storedContext = localStorage.getItem('appContext');
@@ -33,6 +33,10 @@ class AppContext {
     }
 
     public get defaultSettings(): Settings {
+        if (!this.state.language || !this.state.currencyCode) {
+            throw new Error('Missing language or currencycode');
+        }
+
         return {
             language: this.state.language,
             currency: this.state.currencyCode,
