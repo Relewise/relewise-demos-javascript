@@ -17,7 +17,7 @@
             <label class="text-sm">TemporaryId</label>
             <input type="text" v-model="context.temporaryId" @keyup="save" class="mb-3" />
 
-            <label class="text-sm block">Classifications</label>
+            <!-- <label class="text-sm block">Classifications</label>
             <template v-if="context.classifications">
                 <div class="flex items-center gap-2" v-for="(cls, index) in context.classifications" :key="index">
                     <input type="text" class="mb-3" v-model="cls.key" @keyup="save" />
@@ -25,7 +25,7 @@
                     <button @click="deleteClassification(index)" class="px-1 py-1 leading-none rounded-full bg-gray-600">x</button>
                 </div>
             </template>
-            <button @click="addClassification()">Add new</button>
+            <button @click="addClassification()">Add new</button> -->
         </div>
 
         <router-link to="/" class="ml-0 mt-4">Settings</router-link>
@@ -39,14 +39,14 @@ import contextStore from './stores/context.store';
 
 const context = contextStore.context;
 
-function addClassification() {
-    contextStore.addClassification();
-}
+// function addClassification() {
+//     contextStore.addClassification();
+// }
 
-function deleteClassification(index: number) {
-    context.value.classifications?.splice(index, 1);
-    save();
-}
+// function deleteClassification(index: number) {
+//     context.value.classifications?.splice(index, 1);
+//     save();
+// }
 
 function save() {
     contextStore.persistState();
