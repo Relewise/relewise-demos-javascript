@@ -13,9 +13,9 @@
 
         <div>
             <span class="block text-gray-500">{{product.productId}} <span class="text-xs">(Rank: {{product.rank}})</span></span>
-            <a :href="`/product?id=${product.productId}`" :class="product.displayName ? '' : 'text-red-300 hover:text-red-500'">
+            <router-link :to="`/product?id=${product.productId}`" :class="product.displayName ? '' : 'text-red-300 hover:text-red-500'">
                 {{product.displayName ?? '[No DisplayName]'}}
-            </a>
+            </router-link>
         </div>
        
     </div>
