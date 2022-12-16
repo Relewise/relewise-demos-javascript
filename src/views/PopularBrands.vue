@@ -11,7 +11,9 @@
                 <span class="block text-gray-500">{{brand.id}} <span class="text-xs">(Rank: {{brand.rank}})</span></span>
                 {{brand.displayName}}
             </div>
-        </div>        
+        </div>   
+        
+        <div v-if="brands?.recommendations?.length === 0" class="text-gray-600 text-xl">No brands found.</div>
 
     </div>
 </template>

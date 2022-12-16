@@ -1,5 +1,8 @@
 const { defineConfig } = require('@vue/cli-service');
+
+const isProd = process.env.NODE_ENV === 'production';
+
 module.exports = defineConfig({
     transpileDependencies: true,
-    publicPath: '/relewise-demos-javascript/',
+    publicPath: isProd ? '/relewise-demos-javascript/' : undefined,
 });

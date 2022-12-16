@@ -6,22 +6,33 @@ type Classification = {
     value: string;
 };
 
-export interface IAppContext {
+export interface IDataset {
     datasetId: string;
     apiKey: string;
-    language: string|null;
-    currencyCode: string|null;
-    temporaryId?: string;
-    authenticatedId?: string;
-    classifications?: Classification[];
+    displayName?: string|null;
+    language: string;
+    currencyCode: string;
     imageUrlDataKey?: string;
 }
 
+export interface IImpersonation {
+    temporaryId?: string;
+    authenticatedId?: string;
+}
+
+export interface IAppContext {
+    impersonation: IImpersonation;
+    classifications?: Classification[];
+    selectedDatasetIndex: number;
+    datasets: IDataset[];
+}
+
 class AppContext {
-    private state = reactive<IAppContext>({ datasetId: '', apiKey: '', language: null, currencyCode: null });
+    private readonly localStorageName = 'appContextV2';
+    private state = reactive<IAppContext>({ datasets: [{datasetId: '', apiKey: '', language: '', currencyCode: ''}], selectedDatasetIndex: 0, impersonation: {} });
 
     constructor() {
-        const storedContext = localStorage.getItem('appContext');
+        const storedContext = localStorage.getItem(this.localStorageName);
 
         if (storedContext) {
             Object.assign(this.state, JSON.parse(storedContext));
@@ -29,25 +40,33 @@ class AppContext {
     }
 
     public get context() {
-        return computed(() => this.state);
+        return computed(() => this.state.datasets[this.state.selectedDatasetIndex]);
+    }
+
+    public get datasets() {
+        return computed(() => this.state.datasets);
+    }
+
+    public get impersonation() {
+        return computed(() => this.state.impersonation);
     }
 
     public get defaultSettings(): Settings {
-        if (!this.state.language || !this.state.currencyCode) {
+        if (this.state.selectedDatasetIndex < -1) {
             throw new Error('Missing language or currencycode');
         }
 
         return {
-            language: this.state.language,
-            currency: this.state.currencyCode,
+            language: this.context.value.language,
+            currency: this.context.value.currencyCode,
             displayedAtLocation: 'Relewise Demo App',
             user: this.getUser(),
         };
     }
 
     public get selectedProductProperties(): SelectedProductPropertiesSettings {
-        const dataKeys = this.state.imageUrlDataKey
-            ? [this.state.imageUrlDataKey]
+        const dataKeys = this.context.value.imageUrlDataKey
+            ? [this.context.value.imageUrlDataKey]
             : [];
 
         return {
@@ -57,25 +76,25 @@ class AppContext {
     }
 
     public getSearcher(): Searcher {
-        if (!this.state.apiKey || !this.state.datasetId) {
+        if (!this.context.value.apiKey || !this.context.value.datasetId) {
             throw new Error('Missing apiKey or datasetId');
         }
-        return new Searcher(this.state.datasetId, this.state.apiKey);
+        return new Searcher(this.context.value.datasetId, this.context.value.apiKey);
     }
 
     public getRecommender(): Recommender {
-        if (!this.state.apiKey || !this.state.datasetId) {
+        if (!this.context.value.apiKey || !this.context.value.datasetId) {
             throw new Error('Missing apiKey or datasetId');
         }
-        return new Recommender(this.state.datasetId, this.state.apiKey);
+        return new Recommender(this.context.value.datasetId, this.context.value.apiKey);
     }
 
     public persistState() {
-        localStorage.setItem('appContext', JSON.stringify(this.state));
+        localStorage.setItem(this.localStorageName, JSON.stringify(this.state));
     }
 
     public isConfigured() {
-        return this.state.datasetId && this.state.apiKey && this.state.currencyCode && this.state.language;
+        return this.context.value.datasetId && this.context.value.apiKey && this.context.value.currencyCode && this.context.value.language;
     }
 
     public addClassification() {
@@ -86,14 +105,30 @@ class AppContext {
         this.persistState();
     }
 
-    private getUser() {
-
-        if (this.state.authenticatedId && this.state.authenticatedId !== '') {
-            return UserFactory.byTemporaryId(this.state.authenticatedId);
+    public addDataset(newDataset: IDataset) {
+        if (!localStorage.getItem(this.localStorageName)) {
+            // when first coming here via share link we want to remove the default created dataset
+            this.state.datasets = [];
         }
 
-        if (this.state.temporaryId && this.state.temporaryId !== '') {
-            return UserFactory.byTemporaryId(this.state.temporaryId);
+        this.state.datasets.push(newDataset);
+        this.setDataset(newDataset.datasetId);
+    }
+
+    public setDataset(datasetId: string) {
+        this.impersonation.value.authenticatedId = undefined;
+        this.impersonation.value.temporaryId = undefined;
+        this.state.selectedDatasetIndex = this.state.datasets.map(e => e.datasetId).indexOf(datasetId);
+    }
+
+    private getUser() {
+
+        if (this.state.impersonation.authenticatedId && this.state.impersonation.authenticatedId !== '') {
+            return UserFactory.byTemporaryId(this.state.impersonation.authenticatedId);
+        }
+
+        if (this.state.impersonation.temporaryId && this.state.impersonation.temporaryId !== '') {
+            return UserFactory.byTemporaryId(this.state.impersonation.temporaryId);
         }
 
         const user: User = UserFactory.anonymous();

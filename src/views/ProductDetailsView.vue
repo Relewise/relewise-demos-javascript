@@ -16,10 +16,11 @@
     </div>
 </template>
 
-<script lang="ts" setup>import { ref, Ref } from 'vue';
+<script lang="ts" setup>import { ref, Ref, watch } from 'vue';
 import Products from '@/components/Products.vue';
 import { ProductRecommendationRequestCollection, ProductRecommendationResponseCollection, PurchasedWithProductBuilder, ProductsRecommendationCollectionBuilder, ProductsViewedAfterViewingProductBuilder } from '@relewise/client';
 import contextStore from '@/stores/context.store';
+import router from '@/router';
 
 const result: Ref<ProductRecommendationResponseCollection | undefined> = ref<ProductRecommendationResponseCollection | undefined>({} as ProductRecommendationResponseCollection);
 const productId: Ref<string> = ref<string>('');
@@ -36,6 +37,10 @@ function init() {
 }
 
 init();
+
+watch(router.currentRoute, () => {
+    init();
+});
 
 async function recommend() {
     const request: ProductRecommendationRequestCollection = new ProductsRecommendationCollectionBuilder()

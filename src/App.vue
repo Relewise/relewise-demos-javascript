@@ -1,6 +1,9 @@
 <template>
     <nav class="w-1/6 border-r border-solid border-gray-300">
-        <h2 class="text-3xl font-bold mb-4">Relewise demo</h2>
+        <div class="mb-4">
+            <h2 class="text-3xl font-bold">Relewise demo</h2>
+            <h4 class="text-sm inline-block text-brand-500 rounded-full py-1 px-3 bg-gray-200">Dataset: <strong>{{context.displayName}}</strong></h4>
+        </div>
 
         <div class="group__header">Search</div>
         <router-link to="/search">Product Search</router-link>
@@ -13,9 +16,9 @@
 
         <div class="border-t border-b border-solid border-gray-300 py-2 mt-4">
             <label class="text-sm">AuthenticatedId</label>
-            <input type="text" class="mb-3" v-model="context.authenticatedId" @keyup="save" />
+            <input type="text" class="mb-3" v-model="impersonation.authenticatedId" />
             <label class="text-sm">TemporaryId</label>
-            <input type="text" v-model="context.temporaryId" @keyup="save" class="mb-3" />
+            <input type="text" v-model="impersonation.temporaryId" class="mb-3" />
 
             <!-- <label class="text-sm block">Classifications</label>
             <template v-if="context.classifications">
@@ -38,6 +41,7 @@
 import contextStore from './stores/context.store';
 
 const context = contextStore.context;
+const impersonation = contextStore.impersonation;
 
 // function addClassification() {
 //     contextStore.addClassification();
@@ -48,9 +52,9 @@ const context = contextStore.context;
 //     save();
 // }
 
-function save() {
-    contextStore.persistState();
-}
+// function save() {
+//     contextStore.persistState();
+// }
 
 </script>
 
