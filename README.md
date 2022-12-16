@@ -1,6 +1,8 @@
 # relewise-demos-javascript
 Relewise demos featuring Search &amp; Recommendation built on top of the JavaScript SDK
 
+Try it out [https://relewise.github.io/relewise-demos-javascript/](on github pages). (requires access to a dataset in Relewise)
+
 ## Project setup
 ```
 npm install
