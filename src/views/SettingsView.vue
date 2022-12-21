@@ -1,7 +1,7 @@
 <template>
     <div class="home">
 
-        <h1 class="text-4xl text-semibold mb-8">Setup the demo app here!</h1>
+        <h1 class="text-4xl text-semibold mb-8">Settings</h1>
         
         <template v-if="datasets.length > 1">
             <label class="text-sm block">Select dataset</label>
