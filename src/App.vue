@@ -1,5 +1,5 @@
 <template>
-    <nav class="w-1/6 border-r border-solid border-gray-300">
+    <nav class="w-[400px] border-r border-solid border-gray-300">
         <div class="mb-4">
             <h2 class="text-3xl font-bold">Relewise demo</h2>
             <h4 class="text-sm inline-block text-brand-500 rounded-full py-1 px-3 bg-gray-200">Dataset: <strong>{{context.displayName ?? "(not set)"}}</strong></h4>

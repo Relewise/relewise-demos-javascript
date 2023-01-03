@@ -5,8 +5,8 @@
         
         <template v-if="datasets.length > 1">
             <label class="text-sm block">Select dataset</label>
-            <select :value="context.datasetId"  class="mb-6">
-                <option :value="dataset.datasetId" v-for="dataset in datasets" @click="setDataset(dataset.datasetId)" :key="dataset.datasetId">
+            <select :value="context.datasetId" class="mb-6"  @change="setDataset($event.target.value)">
+                <option :value="dataset.datasetId" v-for="dataset in datasets" :key="dataset.datasetId">
                     {{dataset.displayName}} ({{dataset.datasetId}})
                 </option>
             </select>

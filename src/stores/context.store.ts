@@ -65,13 +65,12 @@ class AppContext {
     }
 
     public get selectedProductProperties(): SelectedProductPropertiesSettings {
-        const dataKeys = this.context.value.imageUrlDataKey
-            ? [this.context.value.imageUrlDataKey]
-            : [];
-
         return {
             displayName: true,
-            dataKeys: dataKeys,
+            allData: true,
+            brand: true,
+            categoryPaths: true,
+            pricing: true,
         } as SelectedProductPropertiesSettings;
     }
 
@@ -118,7 +117,9 @@ class AppContext {
     public setDataset(datasetId: string) {
         this.impersonation.value.authenticatedId = undefined;
         this.impersonation.value.temporaryId = undefined;
+        
         this.state.selectedDatasetIndex = this.state.datasets.map(e => e.datasetId).indexOf(datasetId);
+        this.persistState();
     }
 
     private getUser() {

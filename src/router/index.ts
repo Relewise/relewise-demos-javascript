@@ -1,5 +1,5 @@
 import { createRouter, createWebHistory, RouteRecordRaw } from 'vue-router';
-import SettingsView from '../views/SettingsView.vue';
+import SettingsView from '../views/Settings.vue';
 
 function setTitle(name: string) {
     window.document.title = `${name} | Relewise`;
@@ -17,7 +17,7 @@ const routes: Array<RouteRecordRaw> = [
     {
         path: '/search',
         name: 'search',
-        component: () => import(/* webpackChunkName: "SearchView" */ '../views/SearchView.vue'),
+        component: () => import(/* webpackChunkName: "ProductSearch" */ '../views/ProductSearch.vue'),
         meta: {
             title: 'Product Search',
         },
@@ -25,7 +25,7 @@ const routes: Array<RouteRecordRaw> = [
     {
         path: '/product',
         name: 'product',
-        component: () => import(/* webpackChunkName: "ProductDetailsView" */ '../views/ProductDetailsView.vue'),
+        component: () => import(/* webpackChunkName: "ProductDetails" */ '../views/ProductDetails.vue'),
         meta: {
             title: 'Product recommendations',
         },
@@ -33,7 +33,7 @@ const routes: Array<RouteRecordRaw> = [
     {
         path: '/popular-brands',
         name: 'popular-brands',
-        component: () => import(/* webpackChunkName: "ProductDetailsView" */ '../views/PopularBrands.vue'),
+        component: () => import(/* webpackChunkName: "PopularBrands" */ '../views/PopularBrands.vue'),
         meta: {
             title: 'Popular Brands',
         },
