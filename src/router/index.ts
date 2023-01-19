@@ -54,6 +54,14 @@ const routes: Array<RouteRecordRaw> = [
             title: 'Popular categories',
         },
     },
+    {
+        path: '/search-term-based',
+        name: 'search-term-based',
+        component: () => import(/* webpackChunkName: "SearchTermBased" */ '../views/SearchTermBased.vue'),
+        meta: {
+            title: 'Search Term Based',
+        },
+    },    
 ];
 
 const router = createRouter({

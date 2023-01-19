@@ -13,6 +13,7 @@
         <router-link to="/product">Product Details Page (PDP)</router-link>
         <router-link to="/popular-categories">Popular Categories</router-link>
         <router-link to="/popular-brands">Popular Brands</router-link>
+        <router-link to="/search-term-based">Search Term Based</router-link>
 
         <div class="border-t border-b border-solid border-gray-300 py-2 mt-4">
             <label class="text-sm">AuthenticatedId</label>
