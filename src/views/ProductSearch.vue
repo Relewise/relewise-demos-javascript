@@ -46,7 +46,7 @@ const searcher = contextStore.getSearcher();
 
 const predictionsList = ref(predictions.value?.predictions ?? []);
 
-const { index: selectedIndex, reset } = useListNavigator(predictionsList, (item: SearchTermPredictionResult) => { console.log(item); searchFor(item.term ?? '');});
+const { index: selectedIndex, reset } = useListNavigator(predictionsList, (item: SearchTermPredictionResult) => { searchFor(item.term ?? '');});
 
 const debouncedSearch = useDebounceFn(() => {
     if (usedSearchTerm.value !== searchTerm.value) {

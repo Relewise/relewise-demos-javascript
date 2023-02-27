@@ -32,8 +32,10 @@
 
 
     <div class="w-5/6 p-5">
-        <ApiError/>
-        <router-view/>
+        <ApiError>
+            <RouterView>
+            </RouterView>
+        </ApiError>
     </div>
    
 </template>

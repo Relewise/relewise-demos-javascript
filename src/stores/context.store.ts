@@ -103,6 +103,9 @@ class AppContext {
     }
 
     public persistState() {
+        this.errorState.apiKeyError = false;
+        this.errorState.datasetIdError = false;
+
         localStorage.setItem(this.localStorageName, JSON.stringify(this.state));
     }
 
@@ -137,7 +140,6 @@ class AppContext {
     }
 
     public assertApiCall(response: any|undefined) {
-        console.log(response, response.status === 401, response.status === 404);
         if (response.status === 401) {
             this.errorState.datasetIdError = false;
             this.errorState.apiKeyError = true;

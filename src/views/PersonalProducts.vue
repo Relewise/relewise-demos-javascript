@@ -10,7 +10,8 @@
     </div>
 </template>
 
-<script lang="ts" setup>import { ref, Ref, watch } from 'vue';
+<script lang="ts" setup>
+import { ref, Ref, watch } from 'vue';
 import Products from '@/components/Products.vue';
 import { PersonalProductRecommendationBuilder, ProductRecommendationResponse } from '@relewise/client';
 import contextStore from '@/stores/context.store';
@@ -23,7 +24,6 @@ const recommender = contextStore.getRecommender();
 recommend();
 
 async function recommend() {
-    console.log(contextStore.impersonation.value);
     if (!contextStore.impersonation.value.authenticatedId && !contextStore.impersonation.value.temporaryId) {
         invalid.value = true;
         result.value = undefined;

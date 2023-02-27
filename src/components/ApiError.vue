@@ -16,6 +16,7 @@
             <h3>Dataset does not exist</h3>
         </div>
     </div>
+    <slot v-else></slot>
 </template>
 
 <script lang="ts" setup>
