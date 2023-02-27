@@ -23,12 +23,14 @@
                 <BarsArrowUpIcon v-if="showDetails == product.productId"  @click="toggleDetails(product)" class="h-4 w-4 text-gray-500 inline-block cursor-pointer" />
                 <BarsArrowDownIcon v-else @click="toggleDetails(product)" class="h-4 w-4 text-gray-500 inline-block cursor-pointer" />
             </div>
-            <Transition >
+            <div class="text-xs font-semibold">
+                <span v-if="product.salesPrice !== product.listPrice" class="line-through text-gray-500 mr-2">{{ $format(product.listPrice) }}</span>
+                <span>{{ $format(product.salesPrice) }}</span>
+            </div>
+            <Transition>
                 <pre v-if="showDetails == product.productId" class="bg-gray-100 text-gray-700 text-sm p-3 my-3">{{ prettyJson(product) }}</pre>
-            </Transition>
-            
-        </div>
-       
+            </Transition>   
+        </div>  
     </div>
 </template>
 
@@ -47,7 +49,7 @@ const { products } = toRefs(props);
 
 function toggleDetails(product: ProductResult) {
 
-    if(showDetails.value === product.productId) {
+    if (showDetails.value === product.productId) {
         showDetails.value = null;
     }
     else {

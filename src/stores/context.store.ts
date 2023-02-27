@@ -27,9 +27,15 @@ export interface IAppContext {
     datasets: IDataset[];
 }
 
+export interface IAppErrorContext {
+    datasetIdError: boolean;
+    apiKeyError: boolean;
+}
+
 class AppContext {
     private readonly localStorageName = 'appContextV2';
     private state = reactive<IAppContext>({ datasets: [{datasetId: '', apiKey: '', language: '', currencyCode: ''}], selectedDatasetIndex: 0, impersonation: {} });
+    private errorState = reactive<IAppErrorContext>({ datasetIdError: false, apiKeyError: false });
 
     constructor() {
         const storedContext = localStorage.getItem(this.localStorageName);
@@ -49,6 +55,14 @@ class AppContext {
 
     public get impersonation() {
         return computed(() => this.state.impersonation);
+    }
+
+    public get apiKeyError() {
+        return computed(() => this.errorState.apiKeyError);
+    }
+
+    public get datasetIdError() {
+        return computed(() => this.errorState.datasetIdError);
     }
 
     public get defaultSettings(): Settings {
@@ -89,6 +103,9 @@ class AppContext {
     }
 
     public persistState() {
+        this.errorState.apiKeyError = false;
+        this.errorState.datasetIdError = false;
+
         localStorage.setItem(this.localStorageName, JSON.stringify(this.state));
     }
 
@@ -120,6 +137,21 @@ class AppContext {
         
         this.state.selectedDatasetIndex = this.state.datasets.map(e => e.datasetId).indexOf(datasetId);
         this.persistState();
+    }
+
+    public assertApiCall(response: any|undefined) {
+        if (response.status === 401) {
+            this.errorState.datasetIdError = false;
+            this.errorState.apiKeyError = true;
+        }
+        else if (response.status === 404) {
+            this.errorState.datasetIdError = true;
+            this.errorState.apiKeyError = false;
+        }
+        else {
+            this.errorState.datasetIdError = false;
+            this.errorState.apiKeyError = false;
+        }
     }
 
     private getUser() {

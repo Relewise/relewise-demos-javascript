@@ -32,6 +32,8 @@ async function setup() {
         .setSelectedBrandProperties({ displayName: true })
         .sinceMinutesAgo(1440)
         .build());
+
+    contextStore.assertApiCall(brands.value);
 }
 
 setup();

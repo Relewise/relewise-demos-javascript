@@ -34,6 +34,7 @@ async function search() {
         .build();
 
     const response: ProductRecommendationResponse|undefined = await recommender.recommendSearchTermBasedProducts(request);
+    contextStore.assertApiCall(response);
 
     result.value = response;
 }

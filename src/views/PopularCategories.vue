@@ -30,6 +30,8 @@ async function setup() {
         .setNumberOfRecommendations(10)
         .sinceMinutesAgo(1440)
         .build());
+
+    contextStore.assertApiCall(categories.value);
 }
 
 setup();

@@ -55,6 +55,7 @@ async function recommend() {
         .build();
 
     const response: ProductRecommendationResponseCollection | undefined = await recommender.batchProductRecommendations(request);
+    contextStore.assertApiCall(response);
 
     result.value = response;
 }
