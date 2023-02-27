@@ -7,19 +7,21 @@ function setTitle(name: string) {
 
 const routes: Array<RouteRecordRaw> = [
     {
-        path: '/',
-        name: 'settings',
-        component: SettingsView,
-        meta: {
-            title: 'Settings',
-        },
-    },
-    {
         path: '/search',
         name: 'search',
         component: () => import(/* webpackChunkName: "ProductSearch" */ '../views/ProductSearch.vue'),
         meta: {
             title: 'Product Search',
+            navigationGroup: 'Search',
+        },
+    },
+    {
+        path: '/category',
+        name: 'products-in-category',
+        component: () => import(/* webpackChunkName: "ProductsInCategorySearch" */ '../views/ProductsInCategorySearch.vue'),
+        meta: {
+            title: 'Products In Category',
+            navigationGroup: 'Search',
         },
     },
     {
@@ -27,7 +29,8 @@ const routes: Array<RouteRecordRaw> = [
         name: 'product',
         component: () => import(/* webpackChunkName: "ProductDetails" */ '../views/ProductDetails.vue'),
         meta: {
-            title: 'Product recommendations',
+            title: 'Purchased With & Viewed After (PDP)',
+            navigationGroup: 'Product Recommendations',
         },
     },
     {
@@ -36,6 +39,7 @@ const routes: Array<RouteRecordRaw> = [
         component: () => import(/* webpackChunkName: "PopularBrands" */ '../views/PopularBrands.vue'),
         meta: {
             title: 'Popular Brands',
+            navigationGroup: 'Brand Recommendations',
         },
     },
     {
@@ -43,7 +47,17 @@ const routes: Array<RouteRecordRaw> = [
         name: 'popular-products',
         component: () => import(/* webpackChunkName: "PopularProducts" */ '../views/PopularProducts.vue'),
         meta: {
-            title: 'Popular products',
+            title: 'Popular Products',
+            navigationGroup: 'Product Recommendations',
+        },
+    },
+    {
+        path: '/personal-products',
+        name: 'personal-products',
+        component: () => import(/* webpackChunkName: "PersonalProducts" */ '../views/PersonalProducts.vue'),
+        meta: {
+            title: 'Personal Products',
+            navigationGroup: 'Product Recommendations',
         },
     },
     {
@@ -51,7 +65,8 @@ const routes: Array<RouteRecordRaw> = [
         name: 'popular-categories',
         component: () => import(/* webpackChunkName: "PopularProducts" */ '../views/PopularCategories.vue'),
         meta: {
-            title: 'Popular categories',
+            title: 'Popular Categories',
+            navigationGroup: 'Category Recommendations',
         },
     },
     {
@@ -60,8 +75,26 @@ const routes: Array<RouteRecordRaw> = [
         component: () => import(/* webpackChunkName: "SearchTermBased" */ '../views/SearchTermBased.vue'),
         meta: {
             title: 'Search Term Based',
+            navigationGroup: 'Product Recommendations',
         },
-    },    
+    },
+    {
+        path: '/popular-search-terms',
+        name: 'popular-search-terms',
+        component: () => import(/* webpackChunkName: "PopularSearchTerms" */ '../views/PopularSearchTerms.vue'),
+        meta: {
+            title: 'Popular Search Terms',
+            navigationGroup: 'Search',
+        },
+    },
+    {
+        path: '/',
+        name: 'settings',
+        component: SettingsView,
+        meta: {
+            title: 'Settings',
+        },
+    },
 ];
 
 const router = createRouter({

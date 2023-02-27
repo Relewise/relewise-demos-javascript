@@ -13,6 +13,15 @@
             </a>
         </div>
 
+        <div v-if="result && result?.redirects && result.redirects.length > 0" class="mb-5">
+        
+            <h2 class="text-xl font-semibold mb-2">Showing redirect(s) for '{{usedSearchTerm}}'</h2>
+
+            <div v-for="redirect in result.redirects" :key="redirect.id" class="mb-1 pb-1 flex border-b border-solid border-gray-300">
+                {{ redirect.destination }}
+            </div>
+        
+        </div>
         <div v-if="result && result?.results && result.results.length > 0">
             <h2 class="text-xl font-semibold mb-2">Showing results for '{{usedSearchTerm}}' ({{result.results.length}} of {{result.hits}})</h2>
             <Products :products="result?.results"></Products>
@@ -28,8 +37,8 @@ import contextStore from '@/stores/context.store';
 import { useListNavigator } from '@/helpers/useListNavigator';
 import { useDebounceFn } from '@vueuse/core';
 
-const result: Ref<ProductSearchResponse | undefined> = ref<ProductSearchResponse | undefined>({} as ProductSearchResponse);
-const predictions: Ref<SearchTermPredictionResponse | undefined> = ref<SearchTermPredictionResponse | undefined>(undefined);
+const result = ref<ProductSearchResponse | null>(null);
+const predictions: Ref<SearchTermPredictionResponse | null> = ref<SearchTermPredictionResponse | null>(null);
 const searchTerm: Ref<string> = ref<string>('');
 const usedSearchTerm: Ref<string> = ref<string>('');
 
@@ -52,6 +61,7 @@ async function search() {
     const request = new SearchCollectionBuilder()
         .addRequest(new ProductSearchBuilder(contextStore.defaultSettings)
             .setSelectedProductProperties(contextStore.selectedProductProperties)
+            .setSelectedVariantProperties({allData: true, displayName: true})
             .setTerm(searchTerm.value)
             .pagination(p => p.setPageSize(30))
             .build())
@@ -63,11 +73,14 @@ async function search() {
         .build();
 
     const response = await searcher.batch(request);
+    contextStore.assertApiCall(response);
 
     reset();
-    result.value = response.responses[0];
-    predictions.value = response.responses[1];
-    predictionsList.value = response.responses[1].predictions ?? [];
+    if (response && response.responses) {
+        result.value = response.responses[0];
+        predictions.value = response.responses[1];
+        predictionsList.value = response.responses[1]?.predictions ?? [];
+    }
 }
 
 function searchFor(term: string) {

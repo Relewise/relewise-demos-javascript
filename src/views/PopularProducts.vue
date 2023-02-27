@@ -1,6 +1,6 @@
 <template>
     <div class="search">
-        <h1 class="text-2xl font-semibold mb-5">Popular products</h1>
+        <h1 class="mb-5">Popular products the last 7 days</h1>
         <div v-if="result">
             <Products :products="result?.recommendations ?? []"></Products>
         </div>
@@ -20,11 +20,12 @@ recommend();
 async function recommend() {
     const request = new PopularProductsBuilder(contextStore.defaultSettings)
         .setSelectedProductProperties(contextStore.selectedProductProperties)
-        .sinceMinutesAgo(1440)
+        .sinceMinutesAgo(7 * 24 * 60) // One Week
         .setNumberOfRecommendations(30)
         .build();
 
     const response: ProductRecommendationResponse|undefined = await recommender.recommendPopularProducts(request);
+    contextStore.assertApiCall(response);
 
     result.value = response;
 }
