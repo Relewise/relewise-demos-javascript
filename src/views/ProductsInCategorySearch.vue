@@ -4,12 +4,12 @@
         <div class="mb-5">
             <select v-model="category" v-if="categories" @change="search">
                 <option :value="null" disabled>Choose a category</option>
-                <option v-for="category in categories.available" :value="category" :key="category.value?.id ?? ''">{{ category.value?.displayName }}</option>
+                <option v-for="category in categories.available" :value="category" :key="category.value?.id ?? ''">{{ categoryDisplayValue(category) }} ({{ category.hits }})</option>
             </select>
         </div>
 
         <div v-if="category && result && result?.results && result.results.length > 0">
-            <h2 class="text-xl font-semibold mb-2">Showing results in '{{ category.value?.displayName }}' ({{result.results.length}} of {{result.hits}})</h2>
+            <h2 class="text-xl font-semibold mb-2">Showing results in '{{ categoryDisplayValue(category) }}' ({{result.results.length}} of {{result.hits}})</h2>
             <Products :products="result?.results"></Products>
         </div>
     </div>
@@ -61,7 +61,13 @@ async function init() {
     contextStore.assertApiCall(response);
 
     if (response?.facets?.items && response?.facets?.items[0]) {
-        categories.value =response?.facets?.items![0] as CategoryFacetResult;
+        const categoryFacet = response?.facets?.items![0] as CategoryFacetResult;
+        categoryFacet.available = categoryFacet.available?.sort((a, b) => categoryDisplayValue(a).localeCompare(categoryDisplayValue(b)) ?? 0);
+        categories.value = categoryFacet;
     }
+}
+
+function categoryDisplayValue(category: CategoryNameAndIdResultAvailableFacetValue) {
+    return category.value?.displayName ?? category.value?.id ?? '';
 }
 </script>
