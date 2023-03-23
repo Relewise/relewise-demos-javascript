@@ -26,6 +26,9 @@
             <h2 class="text-xl font-semibold mb-2">Showing results for '{{usedSearchTerm}}' ({{result.results.length}} of {{result.hits}})</h2>
             <Products :products="result?.results"></Products>
         </div>
+        <div v-else-if="usedSearchTerm.length > 0">
+            <h2 class="text-xl font-semibold mb-2">Your search '{{ usedSearchTerm }}' returned no matching products.</h2>
+        </div>
     </div>
 </template>
 
