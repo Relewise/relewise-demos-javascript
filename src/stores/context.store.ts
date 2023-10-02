@@ -9,6 +9,7 @@ type Classification = {
 export interface IDataset {
     datasetId: string;
     apiKey: string;
+    serverUrl?: string;
     displayName?: string|null;
     language: string;
     currencyCode: string;
@@ -34,7 +35,7 @@ export interface IAppErrorContext {
 
 class AppContext {
     private readonly localStorageName = 'appContextV2';
-    private state = reactive<IAppContext>({ datasets: [{datasetId: '', apiKey: '', language: '', currencyCode: ''}], selectedDatasetIndex: 0, impersonation: {} });
+    private state = reactive<IAppContext>({ datasets: [{datasetId: '', apiKey: '', serverUrl: '', language: '', currencyCode: ''}], selectedDatasetIndex: 0, impersonation: {} });
     private errorState = reactive<IAppErrorContext>({ datasetIdError: false, apiKeyError: false });
 
     constructor() {
@@ -89,17 +90,27 @@ class AppContext {
     }
 
     public getSearcher(): Searcher {
+        
         if (!this.context.value.apiKey || !this.context.value.datasetId) {
             throw new Error('Missing apiKey or datasetId');
         }
-        return new Searcher(this.context.value.datasetId, this.context.value.apiKey);
+
+        return new Searcher(
+            this.context.value.datasetId, 
+            this.context.value.apiKey, 
+            { serverUrl: this.context.value.serverUrl ? this.context.value.serverUrl : undefined });
     }
 
     public getRecommender(): Recommender {
         if (!this.context.value.apiKey || !this.context.value.datasetId) {
             throw new Error('Missing apiKey or datasetId');
         }
-        return new Recommender(this.context.value.datasetId, this.context.value.apiKey);
+
+
+        return new Recommender(
+            this.context.value.datasetId, 
+            this.context.value.apiKey, 
+            { serverUrl: this.context.value.serverUrl ? this.context.value.serverUrl : undefined });
     }
 
     public persistState() {
