@@ -32,6 +32,12 @@
             type="text"
             placeholder="Api key">
 
+        <label class="text-sm  block mt-6">Server Url</label>
+        <input
+            v-model="context.serverUrl"
+            type="text"
+            placeholder="Server Url - leave blank if in doubt">
+
         <label class="text-sm  block mt-6">Language</label>
         <input
             v-model="context.language"
@@ -110,6 +116,7 @@ function addEmptyDataset() {
         displayName: '',
         apiKey: '',
         datasetId: '',
+        serverUrl:'',
         currencyCode: '',
         language: '',
     });
@@ -123,6 +130,7 @@ function shareLink() {
         displayName: context.value.displayName,
         apiKey: context.value.apiKey,
         datasetId: context.value.datasetId,
+        serverUrl:context.value.serverUrl,
         currencyCode: context.value.currencyCode,
         language: context.value.language,
         imageUrlDataKey: context.value.imageUrlDataKey,

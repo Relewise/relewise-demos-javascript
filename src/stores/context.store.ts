@@ -9,6 +9,7 @@ type Classification = {
 export interface IDataset {
     datasetId: string;
     apiKey: string;
+    serverUrl: string;
     displayName?: string|null;
     language: string;
     currencyCode: string;
@@ -30,12 +31,13 @@ export interface IAppContext {
 export interface IAppErrorContext {
     datasetIdError: boolean;
     apiKeyError: boolean;
+    serverUrlError:boolean;
 }
 
 class AppContext {
     private readonly localStorageName = 'appContextV2';
-    private state = reactive<IAppContext>({ datasets: [{datasetId: '', apiKey: '', language: '', currencyCode: ''}], selectedDatasetIndex: 0, impersonation: {} });
-    private errorState = reactive<IAppErrorContext>({ datasetIdError: false, apiKeyError: false });
+    private state = reactive<IAppContext>({ datasets: [{datasetId: '', apiKey: '', serverUrl: '', language: '', currencyCode: ''}], selectedDatasetIndex: 0, impersonation: {} });
+    private errorState = reactive<IAppErrorContext>({ datasetIdError: false, apiKeyError: false, serverUrlError: false });
 
     constructor() {
         const storedContext = localStorage.getItem(this.localStorageName);
@@ -65,6 +67,10 @@ class AppContext {
         return computed(() => this.errorState.datasetIdError);
     }
 
+    public get serverUrlError(){
+        return computed(()=>this.errorState.serverUrlError);
+    }
+
     public get defaultSettings(): Settings {
         if (this.state.selectedDatasetIndex < -1) {
             throw new Error('Missing language or currencycode');
@@ -89,9 +95,14 @@ class AppContext {
     }
 
     public getSearcher(): Searcher {
+        
         if (!this.context.value.apiKey || !this.context.value.datasetId) {
             throw new Error('Missing apiKey or datasetId');
         }
+
+        if(this.context.value.serverUrl)
+            return new Searcher(this.context.value.datasetId, this.context.value.apiKey, {'serverUrl':this.context.value.serverUrl});
+
         return new Searcher(this.context.value.datasetId, this.context.value.apiKey);
     }
 
@@ -99,6 +110,11 @@ class AppContext {
         if (!this.context.value.apiKey || !this.context.value.datasetId) {
             throw new Error('Missing apiKey or datasetId');
         }
+
+
+        if(this.context.value.serverUrl)
+            return new Recommender(this.context.value.datasetId, this.context.value.apiKey, {'serverUrl':this.context.value.serverUrl});
+    
         return new Recommender(this.context.value.datasetId, this.context.value.apiKey);
     }
 
