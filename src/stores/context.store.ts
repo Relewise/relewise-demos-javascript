@@ -9,7 +9,7 @@ type Classification = {
 export interface IDataset {
     datasetId: string;
     apiKey: string;
-    serverUrl: string;
+    serverUrl?: string;
     displayName?: string|null;
     language: string;
     currencyCode: string;
@@ -31,13 +31,12 @@ export interface IAppContext {
 export interface IAppErrorContext {
     datasetIdError: boolean;
     apiKeyError: boolean;
-    serverUrlError:boolean;
 }
 
 class AppContext {
     private readonly localStorageName = 'appContextV2';
     private state = reactive<IAppContext>({ datasets: [{datasetId: '', apiKey: '', serverUrl: '', language: '', currencyCode: ''}], selectedDatasetIndex: 0, impersonation: {} });
-    private errorState = reactive<IAppErrorContext>({ datasetIdError: false, apiKeyError: false, serverUrlError: false });
+    private errorState = reactive<IAppErrorContext>({ datasetIdError: false, apiKeyError: false });
 
     constructor() {
         const storedContext = localStorage.getItem(this.localStorageName);
@@ -65,10 +64,6 @@ class AppContext {
 
     public get datasetIdError() {
         return computed(() => this.errorState.datasetIdError);
-    }
-
-    public get serverUrlError(){
-        return computed(()=>this.errorState.serverUrlError);
     }
 
     public get defaultSettings(): Settings {
@@ -100,10 +95,10 @@ class AppContext {
             throw new Error('Missing apiKey or datasetId');
         }
 
-        if(this.context.value.serverUrl)
-            return new Searcher(this.context.value.datasetId, this.context.value.apiKey, {'serverUrl':this.context.value.serverUrl});
-
-        return new Searcher(this.context.value.datasetId, this.context.value.apiKey);
+        return new Searcher(
+            this.context.value.datasetId, 
+            this.context.value.apiKey, 
+            { serverUrl: this.context.value.serverUrl ? this.context.value.serverUrl : undefined });
     }
 
     public getRecommender(): Recommender {
@@ -112,10 +107,10 @@ class AppContext {
         }
 
 
-        if(this.context.value.serverUrl)
-            return new Recommender(this.context.value.datasetId, this.context.value.apiKey, {'serverUrl':this.context.value.serverUrl});
-    
-        return new Recommender(this.context.value.datasetId, this.context.value.apiKey);
+        return new Recommender(
+            this.context.value.datasetId, 
+            this.context.value.apiKey, 
+            { serverUrl: this.context.value.serverUrl ? this.context.value.serverUrl : undefined });
     }
 
     public persistState() {
