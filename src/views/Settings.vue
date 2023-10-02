@@ -116,7 +116,7 @@ function addEmptyDataset() {
         displayName: '',
         apiKey: '',
         datasetId: '',
-        serverUrl:'',
+        serverUrl: undefined,
         currencyCode: '',
         language: '',
     });
@@ -130,7 +130,7 @@ function shareLink() {
         displayName: context.value.displayName,
         apiKey: context.value.apiKey,
         datasetId: context.value.datasetId,
-        serverUrl:context.value.serverUrl,
+        serverUrl: context.value.serverUrl,
         currencyCode: context.value.currencyCode,
         language: context.value.language,
         imageUrlDataKey: context.value.imageUrlDataKey,
